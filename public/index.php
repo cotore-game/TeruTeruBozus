@@ -28,8 +28,8 @@
                     <button id="eraserMode" class="tool-button">消しゴム</button>
                     <label for="penWidth">太さ:</label>
                     <input type="range" id="penWidth" min="1" max="20" value="4">
-                    <button id="undoButton" class="tool-button active">元に戻す</button>
-                    <button id="clearButton" class="tool-button active">全消去</button>
+                    <button id="undoButton">元に戻す</button>
+                    <button id="clearButton">全消去</button>
                 </div>
             </div>
             <div class="layer-controls">
@@ -48,31 +48,7 @@
     
     <hr>
     
-    <h2>みんなのてるてる坊主</h2>
-    <div class="teruteru-list">
-        <?php
-        require_once('../src/db_config.php');
-
-        try {
-            $pdo = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=" . DB_CHARSET, DB_USER, DB_PASS);
-            $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-            $stmt = $pdo->query("SELECT image_filename FROM teruteru_bozus ORDER BY posted_at DESC");
-            $teruterus = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            if (empty($teruterus)) {
-                echo "<p>まだ誰も投稿していません。最初のてるてる坊主を描いてみよう！</p>";
-            } else {
-                foreach ($teruterus as $teruteru) {
-                    echo '<img src="teruteru_uploads/' . htmlspecialchars($teruteru['image_filename']) . '" alt="みんなのてるてる坊主">';
-                }
-            }
-
-        } catch (PDOException $e) {
-            echo "エラー: " . $e->getMessage();
-        }
-        ?>
-    </div>
+    <a href="teruteru_gallery.php" class="gallery-button">みんなのてるてる坊主ギャラリーへ</a>
 
     <script src="js/main.js"></script>
 </body>

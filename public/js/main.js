@@ -242,11 +242,8 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.status === 'success') {
                     alert('投稿しました！');
-                    ctx1.clearRect(0, 0, canvasLayer1.width, canvasLayer1.height);
-                    ctx2.clearRect(0, 0, canvasLayer2.width, canvasLayer2.height);
-                    history = [[ctx1.getImageData(0,0,canvasLayer1.width,canvasLayer1.height)], [ctx2.getImageData(0,0,canvasLayer2.width,canvasLayer2.height)]];
-                    setActiveLayer(1);
-                    location.reload(); 
+                    // 投稿成功後にギャラリーページへリダイレクト
+                    window.location.href = 'teruteru_gallery.php'; 
                 } else {
                     alert('投稿に失敗しました: ' + data.message);
                 }
