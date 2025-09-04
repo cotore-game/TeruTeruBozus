@@ -8,8 +8,38 @@
 <body>
     <h1>てるてる坊主メーカー</h1>
     <div class="main-container">
+        <div class="drawing-controls">
+            <div class="palette-and-tools">
+                <div class="color-palette">
+                    <div class="color-box active" data-color="#000000"></div>
+                    <div class="color-box" data-color="#FFFFFF"></div>
+                    <div class="color-box" data-color="#FF0000"></div>
+                    <div class="color-box" data-color="#0000FF"></div>
+                    <div class="color-box" data-color="#008000"></div>
+                    <div class="color-box" data-color="#FFFF00"></div>
+                    <div class="color-box" data-color="#FFA500"></div>
+                    <div class="color-box" data-color="#800080"></div>
+                    <div class="color-box" data-color="#A52A2A"></div>
+                    <div class="color-box" data-color="#FFC0CB"></div>
+                    <input type="color" id="customColorPicker" value="#000000">
+                </div>
+                <div class="drawing-tools">
+                    <button id="drawMode" class="tool-button active">フリーハンド</button>
+                    <button id="fillMode" class="tool-button">塗りつぶし</button>
+                    <button id="undoButton">元に戻す</button>
+                    <button id="clearButton">全消去</button>
+                </div>
+            </div>
+            <div class="layer-controls">
+                <span>レイヤー: </span>
+                <button id="layer1Button" class="layer-button active">レイヤー1</button>
+                <button id="layer2Button" class="layer-button">レイヤー2</button>
+            </div>
+        </div>
+
         <div class="canvas-container">
-            <canvas id="teruteruCanvas"></canvas>
+            <canvas id="teruteruCanvasLayer1" class="drawing-canvas"></canvas>
+            <canvas id="teruteruCanvasLayer2" class="drawing-canvas"></canvas>
         </div>
         <button id="saveButton">投稿する</button>
     </div>

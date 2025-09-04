@@ -3,15 +3,104 @@ body {
     text-align: center;
     background-color: #f0f4f7;
     padding-bottom: 50px;
+    margin: 0;
+}
+
+h1 {
+    margin-top: 20px;
+    margin-bottom: 30px;
 }
 
 .main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
 }
 
+/* 描画コントロール */
+.drawing-controls {
+    display: flex;
+    flex-direction: column; /* ツールとレイヤーを縦に並べる */
+    gap: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.palette-and-tools {
+    display: flex;
+    flex-wrap: wrap; /* パレットとツールを折り返す */
+    gap: 15px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.color-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 200px; /* パレットの幅を固定 */
+    justify-content: flex-start;
+    padding: 5px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.color-box {
+    width: 24px;
+    height: 24px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: transform 0.1s ease;
+}
+.color-box:hover {
+    transform: scale(1.1);
+}
+.color-box.active {
+    border: 2px solid #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+#customColorPicker {
+    width: 32px;
+    height: 32px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+}
+
+.drawing-tools, .layer-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.tool-button, .layer-button {
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+.tool-button:hover, .layer-button:hover {
+    background-color: #d0d0d0;
+}
+.tool-button.active, .layer-button.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+/* キャンバスコンテナとキャンバス */
 .canvas-container {
     width: 300px;
     height: 300px;
@@ -24,23 +113,32 @@ body {
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: relative; /* 子要素のabsolute基準 */
     margin-bottom: 15px;
 }
 
-#teruteruCanvas {
+.drawing-canvas {
     width: 100%;
     height: 100%;
+    position: absolute; /* 親要素内で重ねる */
+    top: 0;
+    left: 0;
     cursor: crosshair;
 }
 
 #saveButton {
-    padding: 10px 20px;
-    font-size: 16px;
+    padding: 12px 25px;
+    font-size: 18px;
     cursor: pointer;
     background-color: #4CAF50;
     color: white;
     border: none;
     border-radius: 5px;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+}
+#saveButton:hover {
+    background-color: #45a049;
 }
 
 hr {
@@ -50,16 +148,53 @@ hr {
     margin: 40px 0;
 }
 
+h2 {
+    margin-bottom: 25px;
+    color: #333;
+}
+
 .teruteru-list {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     gap: 20px;
+    padding: 0 20px;
 }
 
 .teruteru-list img {
     width: 150px;
     height: 150px;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    object-fit: contain; /* 画像が歪まないように */
+    background-image:
+        linear-gradient(45deg, #eee 25%, transparent 25%),
+        linear-gradient(-45deg, #eee 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #eee 75%),
+        linear-gradient(-45deg, transparent 75%, #eee 75%);
+    background-size: 10px 10px; /* 小さめの市松模様 */
+    background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+    .drawing-controls {
+        width: 90%;
+        padding: 10px;
+    }
+    .color-palette {
+        width: 100%;
+        justify-content: center;
+    }
+    .drawing-tools, .layer-controls {
+        width: 100%;
+    }
+    .canvas-container {
+        width: 280px;
+        height: 280px;
+    }
+    .teruteru-list img {
+        width: 120px;
+        height: 120px;
+    }
 }
