@@ -9,8 +9,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveButton = document.getElementById('saveButton');
     const colorPalette = document.querySelector('.color-palette');
     const customColorPicker = document.getElementById('customColorPicker');
-    const drawModeButton = document.getElementById('drawMode');
-    const fillModeButton = document.getElementById('fillMode');
+    const penModeButton = document.getElementById('penMode');
+    const eraserModeButton = document.getElementById('eraserMode');
+    const penWidthSlider = document.getElementById('penWidth');
     const undoButton = document.getElementById('undoButton');
     const clearButton = document.getElementById('clearButton');
     const layer1Button = document.getElementById('layer1Button');
@@ -19,8 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // グローバル状態変数
     let activeCanvas = canvasLayer1;
     let activeCtx = ctx1;
-    let currentDrawingMode = 'draw'; // 'draw' or 'fill'
+    let currentDrawingMode = 'pen'; // 'pen' or 'eraser'
     let currentColor = '#000000';
+    let penWidth = penWidthSlider.value;
     let isDrawing = false;
     let history = [[], []]; // 各レイヤーの操作履歴 (ImageDataを保存)
     const MAX_HISTORY = 10; // 履歴の最大数
@@ -30,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         canvas.width = 300;
         canvas.height = 300;
         const ctx = canvas.getContext('2d');
-        ctx.lineWidth = 4;
+        ctx.lineWidth = penWidth;
         ctx.lineCap = 'round';
         ctx.strokeStyle = currentColor;
     });
@@ -54,11 +56,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // 履歴から元に戻す関数
     const undo = () => {
         const currentLayerIndex = activeCanvas === canvasLayer1 ? 0 : 1;
-        if (history[currentLayerIndex].length > 1) { // 少なくとも1つ前の状態がある場合
-            history[currentLayerIndex].pop(); // 現在の状態を削除
+        if (history[currentLayerIndex].length > 1) { 
+            history[currentLayerIndex].pop(); 
             activeCtx.putImageData(history[currentLayerIndex][history[currentLayerIndex].length - 1], 0, 0);
         } else if (history[currentLayerIndex].length === 1) {
-            // 最初の状態（クリア状態）に戻す
             activeCtx.clearRect(0, 0, activeCanvas.width, activeCanvas.height);
             history[currentLayerIndex] = [activeCtx.getImageData(0, 0, activeCanvas.width, activeCanvas.height)];
         }
@@ -68,12 +69,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const clearCanvas = () => {
         if (confirm("現在のレイヤーの内容をすべて消去しますか？")) {
             activeCtx.clearRect(0, 0, activeCanvas.width, activeCanvas.height);
-            // 履歴もクリア状態にする
             const currentLayerIndex = activeCanvas === canvasLayer1 ? 0 : 1;
             history[currentLayerIndex] = [activeCtx.getImageData(0, 0, activeCanvas.width, activeCanvas.height)];
         }
     };
-
 
     // マウス/タッチ座標の取得
     const getPos = (e) => {
@@ -88,21 +87,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 描画開始
     const startDrawing = (e) => {
-        e.preventDefault(); // スクロール防止
         isDrawing = true;
         const pos = getPos(e);
-        if (currentDrawingMode === 'draw') {
-            activeCtx.beginPath();
-            activeCtx.moveTo(pos.x, pos.y);
-        } else if (currentDrawingMode === 'fill') {
-            floodFill(activeCtx, pos.x, pos.y, hexToRgba(currentColor));
-            saveHistory(); // 塗りつぶし後に履歴を保存
-        }
+        activeCtx.beginPath();
+        activeCtx.moveTo(pos.x, pos.y);
     };
 
     // 描画中
     const draw = (e) => {
-        if (!isDrawing || currentDrawingMode === 'fill') return; // 塗りつぶしモードでは描画しない
+        if (!isDrawing) return;
         e.preventDefault();
         const pos = getPos(e);
         activeCtx.lineTo(pos.x, pos.y);
@@ -111,8 +104,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 描画終了
     const stopDrawing = () => {
-        if (isDrawing && currentDrawingMode === 'draw') {
-            saveHistory(); // フリーハンド描画後に履歴を保存
+        if (isDrawing) {
+            saveHistory(); // 描画後に履歴を保存
         }
         isDrawing = false;
     };
@@ -137,6 +130,14 @@ document.addEventListener('DOMContentLoaded', () => {
             targetColorBox.classList.add('active');
             currentColor = targetColorBox.dataset.color;
             activeCtx.strokeStyle = currentColor;
+            // モードがペンの場合は色を設定、消しゴムの場合はグローバルコンポジションを設定
+            if (currentDrawingMode === 'pen') {
+                activeCtx.globalCompositeOperation = 'source-over';
+                activeCtx.strokeStyle = currentColor;
+            } else {
+                activeCtx.globalCompositeOperation = 'destination-out';
+                activeCtx.strokeStyle = 'rgba(0,0,0,1)';
+            }
         }
     });
 
@@ -145,21 +146,36 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('.color-box').forEach(box => box.classList.remove('active'));
         currentColor = e.target.value;
         activeCtx.strokeStyle = currentColor;
+        if (currentDrawingMode === 'pen') {
+            activeCtx.globalCompositeOperation = 'source-over';
+            activeCtx.strokeStyle = currentColor;
+        } else {
+            activeCtx.globalCompositeOperation = 'destination-out';
+            activeCtx.strokeStyle = 'rgba(0,0,0,1)';
+        }
     });
 
     // 描画モード切り替え
-    drawModeButton.addEventListener('click', () => {
-        currentDrawingMode = 'draw';
-        drawModeButton.classList.add('active');
-        fillModeButton.classList.remove('active');
-        [canvasLayer1, canvasLayer2].forEach(canvas => canvas.style.cursor = 'crosshair');
+    penModeButton.addEventListener('click', () => {
+        currentDrawingMode = 'pen';
+        penModeButton.classList.add('active');
+        eraserModeButton.classList.remove('active');
+        activeCtx.globalCompositeOperation = 'source-over'; // 通常の描画モード
+        activeCtx.strokeStyle = currentColor;
     });
 
-    fillModeButton.addEventListener('click', () => {
-        currentDrawingMode = 'fill';
-        fillModeButton.classList.add('active');
-        drawModeButton.classList.remove('active');
-        [canvasLayer1, canvasLayer2].forEach(canvas => canvas.style.cursor = 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' width=\'24\' height=\'24\' viewBox=\'0 0 24 24\' fill=\'%23000\'%3E%3Cpath d=\'M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-2-12h4v2h-4zm0 4h4v2h-4zm0 4h4v2h-4z\'/%3E%3C/svg%3E") 12 12, auto');
+    eraserModeButton.addEventListener('click', () => {
+        currentDrawingMode = 'eraser';
+        eraserModeButton.classList.add('active');
+        penModeButton.classList.remove('active');
+        activeCtx.globalCompositeOperation = 'destination-out'; // 消しゴムモード
+        activeCtx.strokeStyle = 'rgba(0,0,0,1)'; // 消しゴムは色に関わらず透明に
+    });
+
+    // ペンの太さ調整
+    penWidthSlider.addEventListener('input', (e) => {
+        penWidth = e.target.value;
+        activeCtx.lineWidth = penWidth;
     });
 
     // 元に戻すボタン
@@ -186,9 +202,15 @@ document.addEventListener('DOMContentLoaded', () => {
             canvasLayer1.style.zIndex = 1;
         }
         // 現在の色と描画スタイルをアクティブコンテキストに適用
-        activeCtx.strokeStyle = currentColor;
-        activeCtx.lineWidth = 4;
+        activeCtx.lineWidth = penWidth;
         activeCtx.lineCap = 'round';
+        if (currentDrawingMode === 'pen') {
+            activeCtx.globalCompositeOperation = 'source-over';
+            activeCtx.strokeStyle = currentColor;
+        } else {
+            activeCtx.globalCompositeOperation = 'destination-out';
+            activeCtx.strokeStyle = 'rgba(0,0,0,1)';
+        }
     };
 
     layer1Button.addEventListener('click', () => setActiveLayer(1));
@@ -200,18 +222,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // 投稿ボタンのクリックイベント
     saveButton.addEventListener('click', () => {
         if (confirm("投稿しますか？")) {
-            // 2つのレイヤーを統合するための新しいキャンバスを作成
             const mergedCanvas = document.createElement('canvas');
             mergedCanvas.width = canvasLayer1.width;
             mergedCanvas.height = canvasLayer1.height;
             const mergedCtx = mergedCanvas.getContext('2d');
-
-            // レイヤー1を描画
             mergedCtx.drawImage(canvasLayer1, 0, 0);
-            // レイヤー2を描画（レイヤー1の上に重ねる）
             mergedCtx.drawImage(canvasLayer2, 0, 0);
 
-            // 統合された画像を透過PNGとして取得
             const imageDataURL = mergedCanvas.toDataURL('image/png');
             
             fetch('save_teruteru.php', {
@@ -225,11 +242,10 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(data => {
                 if (data.status === 'success') {
                     alert('投稿しました！');
-                    // 両方のキャンバスをクリアし、履歴もリセット
                     ctx1.clearRect(0, 0, canvasLayer1.width, canvasLayer1.height);
                     ctx2.clearRect(0, 0, canvasLayer2.width, canvasLayer2.height);
                     history = [[ctx1.getImageData(0,0,canvasLayer1.width,canvasLayer1.height)], [ctx2.getImageData(0,0,canvasLayer2.width,canvasLayer2.height)]];
-                    setActiveLayer(1); // レイヤー1をアクティブに戻す
+                    setActiveLayer(1);
                     location.reload(); 
                 } else {
                     alert('投稿に失敗しました: ' + data.message);
@@ -241,113 +257,4 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
     });
-
-
-    // --- 塗りつぶし (Flood Fill Algorithm) の実装 ---
-    // 参考: https://www.mikechambers.com/blog/2010/06/27/html5-canvas-and-javascript-image-fill-tool/
-
-    function floodFill(ctx, x, y, fillColor) {
-        const imageData = ctx.getImageData(0, 0, ctx.canvas.width, ctx.canvas.height);
-        const data = imageData.data;
-        const width = imageData.width;
-        const height = imageData.height;
-
-        const startPos = (y * width + x) * 4;
-        const startColor = [data[startPos], data[startPos + 1], data[startPos + 2], data[startPos + 3]];
-
-        // 塗りつぶし色が開始色と同じ場合は何もしない
-        if (
-            startColor[0] === fillColor[0] &&
-            startColor[1] === fillColor[1] &&
-            startColor[2] === fillColor[2] &&
-            startColor[3] === fillColor[3]
-        ) {
-            return;
-        }
-
-        const q = [[x, y]]; // 塗りつぶし領域のキュー
-        let pixel;
-        let reachLeft, reachRight;
-
-        while (q.length) {
-            pixel = q.pop();
-            x = pixel[0];
-            y = pixel[1];
-
-            let curPos = (y * width + x) * 4;
-            // 上端に到達、または現在の色が異なる場合は次のピクセルへ
-            while (y >= 0 && matchColor(curPos, startColor, data)) {
-                curPos -= width * 4;
-                y--;
-            }
-
-            curPos += width * 4;
-            y++;
-            reachLeft = false;
-            reachRight = false;
-
-            while (y < height && matchColor(curPos, startColor, data)) {
-                setColor(curPos, fillColor, data);
-
-                if (x > 0) {
-                    if (matchColor(curPos - 4, startColor, data)) {
-                        if (!reachLeft) {
-                            q.push([x - 1, y]);
-                            reachLeft = true;
-                        }
-                    } else if (reachLeft) {
-                        reachLeft = false;
-                    }
-                }
-
-                if (x < width - 1) {
-                    if (matchColor(curPos + 4, startColor, data)) {
-                        if (!reachRight) {
-                            q.push([x + 1, y]);
-                            reachRight = true;
-                        }
-                    } else if (reachRight) {
-                        reachRight = false;
-                    }
-                }
-
-                curPos += width * 4;
-                y++;
-            }
-        }
-        ctx.putImageData(imageData, 0, 0);
-    }
-
-    function matchColor(pos, color, data) {
-        // アルファ値を考慮して色を比較
-        // 許容誤差を設定することも可能 (例: Math.abs(data[pos] - color[0]) < tolerance)
-        return data[pos] === color[0] &&
-               data[pos + 1] === color[1] &&
-               data[pos + 2] === color[2] &&
-               data[pos + 3] === color[3];
-    }
-
-    function setColor(pos, color, data) {
-        data[pos] = color[0];
-        data[pos + 1] = color[1];
-        data[pos + 2] = color[2];
-        data[pos + 3] = color[3];
-    }
-
-    // HexカラーコードをRGBA配列に変換
-    function hexToRgba(hex) {
-        let c;
-        if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-            c = hex.substring(1).split('');
-            if (c.length === 3) {
-                c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-            }
-            c = '0x' + c.join('');
-            return [(c >> 16) & 255, (c >> 8) & 255, c & 255, 255]; // アルファ値は常に255 (不透明)
-        }
-        throw new Error('Bad Hex');
-    }
-
-    // 初期設定でレイヤー1をアクティブにする
-    setActiveLayer(1);
 });

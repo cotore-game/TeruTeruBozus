@@ -24,10 +24,12 @@
                     <input type="color" id="customColorPicker" value="#000000">
                 </div>
                 <div class="drawing-tools">
-                    <button id="drawMode" class="tool-button active">フリーハンド</button>
-                    <button id="fillMode" class="tool-button">塗りつぶし</button>
-                    <button id="undoButton">元に戻す</button>
-                    <button id="clearButton">全消去</button>
+                    <button id="penMode" class="tool-button active">ペン</button>
+                    <button id="eraserMode" class="tool-button">消しゴム</button>
+                    <label for="penWidth">太さ:</label>
+                    <input type="range" id="penWidth" min="1" max="20" value="4">
+                    <button id="undoButton" class="tool-button active">元に戻す</button>
+                    <button id="clearButton" class="tool-button active">全消去</button>
                 </div>
             </div>
             <div class="layer-controls">

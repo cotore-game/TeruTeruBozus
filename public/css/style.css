@@ -21,7 +21,7 @@ h1 {
 /* 描画コントロール */
 .drawing-controls {
     display: flex;
-    flex-direction: column; /* ツールとレイヤーを縦に並べる */
+    flex-direction: column; 
     gap: 15px;
     margin-bottom: 20px;
     background-color: #fff;
@@ -32,7 +32,7 @@ h1 {
 
 .palette-and-tools {
     display: flex;
-    flex-wrap: wrap; /* パレットとツールを折り返す */
+    flex-wrap: wrap; 
     gap: 15px;
     justify-content: center;
     align-items: flex-start;
@@ -42,7 +42,7 @@ h1 {
     display: flex;
     flex-wrap: wrap;
     gap: 8px;
-    width: 200px; /* パレットの幅を固定 */
+    width: 200px; 
     justify-content: flex-start;
     padding: 5px;
     border: 1px solid #eee;
@@ -52,6 +52,7 @@ h1 {
 .color-box {
     width: 24px;
     height: 24px;
+    /* 白いボックスでも見分けがつくように、薄いボーダーを追加 */
     border: 1px solid #ccc;
     cursor: pointer;
     border-radius: 4px;
@@ -63,6 +64,13 @@ h1 {
 .color-box.active {
     border: 2px solid #3498db;
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+/* 白のカラーボックスに専用のボーダーを適用 */
+.color-box[data-color="#FFFFFF"] {
+    border: 1px solid #b3b3b3;
+}
+.color-box[data-color="#FFFFFF"].active {
+    border: 2px solid #3498db;
 }
 
 #customColorPicker {
@@ -79,6 +87,7 @@ h1 {
     gap: 10px;
     flex-wrap: wrap;
     justify-content: center;
+    align-items: center; /* 垂直方向も中央揃え */
 }
 
 .tool-button, .layer-button {
@@ -100,6 +109,11 @@ h1 {
     border-color: #3498db;
 }
 
+#penWidth {
+    width: 120px;
+    cursor: pointer;
+}
+
 /* キャンバスコンテナとキャンバス */
 .canvas-container {
     width: 300px;
@@ -113,14 +127,14 @@ h1 {
     background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
     border: 1px solid #ddd;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    position: relative; /* 子要素のabsolute基準 */
+    position: relative; 
     margin-bottom: 15px;
 }
 
 .drawing-canvas {
     width: 100%;
     height: 100%;
-    position: absolute; /* 親要素内で重ねる */
+    position: absolute; 
     top: 0;
     left: 0;
     cursor: crosshair;
@@ -166,13 +180,13 @@ h2 {
     height: 150px;
     border-radius: 8px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.15);
-    object-fit: contain; /* 画像が歪まないように */
+    object-fit: contain; 
     background-image:
         linear-gradient(45deg, #eee 25%, transparent 25%),
         linear-gradient(-45deg, #eee 25%, transparent 25%),
         linear-gradient(45deg, transparent 75%, #eee 75%),
         linear-gradient(-45deg, transparent 75%, #eee 75%);
-    background-size: 10px 10px; /* 小さめの市松模様 */
+    background-size: 10px 10px; 
     background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
 }
 
