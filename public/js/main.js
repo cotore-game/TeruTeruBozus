@@ -2,8 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // キャンバス要素の取得
     const canvasLayer1 = document.getElementById('teruteruCanvasLayer1');
     const canvasLayer2 = document.getElementById('teruteruCanvasLayer2');
-    const ctx1 = canvasLayer1.getContext('2d');
-    const ctx2 = canvasLayer2.getContext('2d');
+    const ctx1 = canvasLayer1.getContext('2d', { willReadFrequently: true });
+    const ctx2 = canvasLayer2.getContext('2d', { willReadFrequently: true });
 
     // UI要素の取得
     const saveButton = document.getElementById('saveButton');

@@ -38,8 +38,8 @@
         </div>
 
         <div class="canvas-container">
-            <canvas id="teruteruCanvasLayer1" class="drawing-canvas"></canvas>
-            <canvas id="teruteruCanvasLayer2" class="drawing-canvas"></canvas>
+            <canvas id="teruteruCanvasLayer1" class="drawing-canvas" will-read-frequently="true"></canvas>
+            <canvas id="teruteruCanvasLayer2" class="drawing-canvas" will-read-frequently="true"></canvas>
         </div>
         <button id="saveButton">投稿する</button>
     </div>
