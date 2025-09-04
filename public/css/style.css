@@ -52,7 +52,8 @@ h1 {
 .color-box {
     width: 24px;
     height: 24px;
-    /* 白いボックスでも見分けがつくように、薄いボーダーを追加 */
+    /* 背景色を、HTMLのdata-color属性の値から動的に設定 */
+    background-color: var(--color-value);
     border: 1px solid #ccc;
     cursor: pointer;
     border-radius: 4px;
@@ -65,7 +66,8 @@ h1 {
     border: 2px solid #3498db;
     box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
 }
-/* 白のカラーボックスに専用のボーダーを適用 */
+
+/* 白のカラーボックスのボーダーは、背景色と区別するため個別に設定 */
 .color-box[data-color="#FFFFFF"] {
     border: 1px solid #b3b3b3;
 }

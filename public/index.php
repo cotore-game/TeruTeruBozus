@@ -11,16 +11,16 @@
         <div class="drawing-controls">
             <div class="palette-and-tools">
                 <div class="color-palette">
-                    <div class="color-box active" data-color="#000000"></div>
-                    <div class="color-box" data-color="#FFFFFF"></div>
-                    <div class="color-box" data-color="#FF0000"></div>
-                    <div class="color-box" data-color="#0000FF"></div>
-                    <div class="color-box" data-color="#008000"></div>
-                    <div class="color-box" data-color="#FFFF00"></div>
-                    <div class="color-box" data-color="#FFA500"></div>
-                    <div class="color-box" data-color="#800080"></div>
-                    <div class="color-box" data-color="#A52A2A"></div>
-                    <div class="color-box" data-color="#FFC0CB"></div>
+                    <div class="color-box active" data-color="#000000" style="background-color: #000000;"></div>
+                    <div class="color-box" data-color="#FFFFFF" style="background-color: #FFFFFF;"></div>
+                    <div class="color-box" data-color="#FF0000" style="background-color: #FF0000;"></div>
+                    <div class="color-box" data-color="#0000FF" style="background-color: #0000FF;"></div>
+                    <div class="color-box" data-color="#008000" style="background-color: #008000;"></div>
+                    <div class="color-box" data-color="#FFFF00" style="background-color: #FFFF00;"></div>
+                    <div class="color-box" data-color="#FFA500" style="background-color: #FFA500;"></div>
+                    <div class="color-box" data-color="#800080" style="background-color: #800080;"></div>
+                    <div class="color-box" data-color="#A52A2A" style="background-color: #A52A2A;"></div>
+                    <div class="color-box" data-color="#FFC0CB" style="background-color: #FFC0CB;"></div>
                     <input type="color" id="customColorPicker" value="#000000">
                 </div>
                 <div class="drawing-tools">
