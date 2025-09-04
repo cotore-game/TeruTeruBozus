@@ -20,19 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 3. ボディにクラスを付与してCSSを適用
     body.classList.add(timeOfDay, randomCondition);
     
-    // 4. てるてる坊主画像にCSSフィルターを適用
-    teruteruImages.forEach(img => {
-        let filter = '';
-        if (randomCondition === 'rain') {
-            filter += 'grayscale(30%) brightness(80%)';
-        }
-        if (timeOfDay === 'night') {
-            filter += ' brightness(40%) sepia(30%) hue-rotate(200deg)';
-        }
-        img.style.filter = filter;
-    });
-
-    // 5. 雨の場合はパーティクルを動的に生成
+    // 4. 雨の場合はパーティクルを動的に生成
     if (randomCondition === 'rain') {
         const rainCount = 100;
         for (let i = 0; i < rainCount; i++) {

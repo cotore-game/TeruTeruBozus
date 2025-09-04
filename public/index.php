@@ -1,9 +1,16 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="オリジナルのてるてる坊主を作成して投稿できるサイト。結構作り荒いです">
+    <meta name="author" content="SUOQA">
+    <meta property="og:title" content="てるてる坊主メーカー">
+    <meta property="og:description" content="オリジナルのてるてる坊主を作成して投稿できるサイトです。結構作り荒いです">
     <title>てるてる坊主メーカー</title>
     <link rel="stylesheet" href="css/style.css">
+</head>
 </head>
 <body>
     <h1>てるてる坊主メーカー</h1>

@@ -26,8 +26,6 @@ body {
     height: 150px;
     object-fit: contain;
     animation: sway 5s ease-in-out infinite alternate;
-    /* CSSフィルターで環境光を表現 */
-    transition: filter 1s ease-in-out;
 }
 
 /* 風で揺れるアニメーション */
