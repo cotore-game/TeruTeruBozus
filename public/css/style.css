@@ -1,0 +1,233 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    background-color: #f0f4f7;
+    padding-bottom: 50px;
+    margin: 0;
+}
+
+h1 {
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+/* 描画コントロール */
+.drawing-controls {
+    display: flex;
+    flex-direction: column; 
+    gap: 15px;
+    margin-bottom: 20px;
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.palette-and-tools {
+    display: flex;
+    flex-wrap: wrap; 
+    gap: 15px;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.color-palette {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    width: 200px; 
+    justify-content: flex-start;
+    padding: 5px;
+    border: 1px solid #eee;
+    border-radius: 5px;
+}
+
+.color-box {
+    width: 24px;
+    height: 24px;
+    /* 背景色を、HTMLのdata-color属性の値から動的に設定 */
+    background-color: var(--color-value);
+    border: 1px solid #ccc;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: transform 0.1s ease;
+}
+.color-box:hover {
+    transform: scale(1.1);
+}
+.color-box.active {
+    border: 2px solid #3498db;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.5);
+}
+
+/* 白のカラーボックスのボーダーは、背景色と区別するため個別に設定 */
+.color-box[data-color="#FFFFFF"] {
+    border: 1px solid #b3b3b3;
+}
+.color-box[data-color="#FFFFFF"].active {
+    border: 2px solid #3498db;
+}
+
+#customColorPicker {
+    width: 32px;
+    height: 32px;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    background: none;
+}
+
+.drawing-tools, .layer-controls {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center; /* 垂直方向も中央揃え */
+}
+
+.tool-button, .layer-button {
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #e0e0e0;
+    color: #333;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+.tool-button:hover, .layer-button:hover {
+    background-color: #d0d0d0;
+}
+.tool-button.active, .layer-button.active {
+    background-color: #3498db;
+    color: white;
+    border-color: #3498db;
+}
+
+#penWidth {
+    width: 120px;
+    cursor: pointer;
+}
+
+/* キャンバスコンテナとキャンバス */
+.canvas-container {
+    width: 300px;
+    height: 300px;
+    background-image:
+        linear-gradient(45deg, #ccc 25%, transparent 25%),
+        linear-gradient(-45deg, #ccc 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #ccc 75%),
+        linear-gradient(-45deg, transparent 75%, #ccc 75%);
+    background-size: 20px 20px;
+    background-position: 0 0, 0 10px, 10px -10px, -10px 0px;
+    border: 1px solid #ddd;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    position: relative; 
+    margin-bottom: 15px;
+}
+
+.drawing-canvas {
+    width: 100%;
+    height: 100%;
+    position: absolute; 
+    top: 0;
+    left: 0;
+    cursor: crosshair;
+}
+
+#saveButton {
+    padding: 12px 25px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 15px;
+    transition: background-color 0.2s;
+}
+#saveButton:hover {
+    background-color: #45a049;
+}
+
+hr {
+    border: 0;
+    height: 1px;
+    background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+    margin: 40px 0;
+}
+
+.gallery-button {
+    display: inline-block;
+    padding: 12px 25px;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.gallery-button:hover {
+    background-color: #2980b9;
+}
+
+h2 {
+    margin-bottom: 25px;
+    color: #333;
+}
+
+.teruteru-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    padding: 0 20px;
+}
+
+.teruteru-list img {
+    width: 150px;
+    height: 150px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+    object-fit: contain; 
+    background-image:
+        linear-gradient(45deg, #eee 25%, transparent 25%),
+        linear-gradient(-45deg, #eee 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #eee 75%),
+        linear-gradient(-45deg, transparent 75%, #eee 75%);
+    background-size: 10px 10px; 
+    background-position: 0 0, 0 5px, 5px -5px, -5px 0px;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 600px) {
+    .drawing-controls {
+        width: 90%;
+        padding: 10px;
+    }
+    .color-palette {
+        width: 100%;
+        justify-content: center;
+    }
+    .drawing-tools, .layer-controls {
+        width: 100%;
+    }
+    .canvas-container {
+        width: 280px;
+        height: 280px;
+    }
+    .teruteru-list img {
+        width: 120px;
+        height: 120px;
+    }
+}

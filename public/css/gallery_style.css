@@ -1,0 +1,105 @@
+/* 基本スタイル */
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+    transition: background-color 1s ease-in-out;
+}
+
+.teruteru-list {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 30px;
+    padding: 20px;
+}
+
+.teruteru-list img {
+    width: 150px;
+    height: 150px;
+    object-fit: contain;
+    animation: sway 5s ease-in-out infinite alternate;
+}
+
+/* 風で揺れるアニメーション */
+@keyframes sway {
+    from { transform: rotate(2deg); }
+    to { transform: rotate(-2deg); }
+}
+
+/* --- 動的背景と太陽・月 --- */
+
+.sky {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+}
+
+.sun-moon {
+    position: absolute;
+    top: 15%;
+    left: 15%;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    transition: all 1s ease-in-out;
+}
+
+/* 昼間のグラデーションと太陽 */
+.day {
+    background: linear-gradient(to top, #87CEEB, #B0E0E6);
+}
+.day .sun-moon {
+    background-color: #FFEB3B;
+    box-shadow: 0 0 40px 10px #FFEB3B;
+}
+/* 夜間のグラデーションと月 */
+.night {
+    background: linear-gradient(to top, #1A237E, #3949AB);
+}
+.night .sun-moon {
+    background-color: #E0E0E0;
+    box-shadow: 0 0 20px 5px #E0E0E0;
+}
+/* 雨の日のグラデーションと太陽/月 */
+.rain {
+    background: linear-gradient(to top, #455A64, #78909C);
+}
+.rain .sun-moon {
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: none;
+}
+
+/* --- 雨のパーティクルエフェクト --- */
+.rain-particle {
+    position: fixed;
+    top: -50px;
+    width: 1px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.6);
+    animation: fall 1s linear infinite;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* 雨の時に表示 */
+body.rain .rain-particle {
+    opacity: 1;
+}
+
+@keyframes fall {
+    to {
+        transform: translateY(100vh);
+    }
+}
