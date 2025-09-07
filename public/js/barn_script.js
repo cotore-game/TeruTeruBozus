@@ -1,15 +1,36 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const teruteruImg = document.getElementById('teruteru-img');
+    const body = document.body;
+    const teruteruImages = document.querySelectorAll('.teruteru-image');
     const message = document.getElementById('message');
     
-    // 画像が画面に表示されてからアニメーションを開始
+    // 燃焼アニメーションの開始
     setTimeout(() => {
-        teruteruImg.classList.add('burn');
+        body.classList.add('burning');
+        teruteruImages.forEach((img, index) => {
+            // 個々のてるてる坊主の燃焼開始をランダムに遅延させる
+            setTimeout(() => {
+                img.classList.add('burn');
+            }, 500 * index);
+        });
     }, 1000); // 1秒後に燃焼開始
 
-    // アニメーション完了後にメッセージとボタンを表示
-    teruteruImg.addEventListener('transitionend', () => {
-        message.classList.remove('hidden');
-        homeButton.classList.remove('hidden');
+    // すべてのてるてる坊主が燃え尽きた後に処理
+    let burnedCount = 0;
+    const totalImages = teruteruImages.length;
+    
+    teruteruImages.forEach(img => {
+        img.addEventListener('transitionend', () => {
+            burnedCount++;
+            if (burnedCount === totalImages) {
+                // すべてのてるてる坊主が燃え尽きた
+                body.classList.remove('burning');
+                message.classList.remove('hidden');
+            }
+        }, { once: true });
+    });
+
+    // ボタンクリックでホームへ戻る
+    homeButton.addEventListener('click', () => {
+        window.location.href = 'teruteru_maker.php';
     });
 });

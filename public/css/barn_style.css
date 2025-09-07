@@ -7,7 +7,7 @@ body {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
     overflow: hidden;
     text-align: center;
@@ -49,72 +49,91 @@ p {
     background-color: #2980b9;
 }
 
-/* --- てるてる坊主 --- */
-.teruteru-barn img {
-    width: 200px;
-    height: 200px;
+/* --- てるてる坊主リスト --- */
+.teruteru-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 50px;
+}
+
+.teruteru-image {
+    width: 150px;
+    height: 150px;
     object-fit: contain;
     transition: transform 1s, opacity 2s ease-in;
     transform: translateY(0);
 }
 
 /* 燃焼アニメーション（JavaScriptでクラスを付与） */
-.teruteru-barn img.burn {
+.teruteru-image.burn {
     opacity: 0;
     transform: scale(0.5) translateY(100px);
 }
 
-/* --- 炎のアニメーション --- */
+/* --- 炎と煙のエフェクト（画面全体） --- */
 .fire-container {
-    position: relative;
-    width: 200px;
-    height: 100px;
-    overflow: hidden;
-    margin-top: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none; /* マウスイベントを無効化 */
 }
 
 .fire {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    bottom: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
     background: radial-gradient(ellipse at bottom, #fd5e53 0%, transparent 80%);
+    opacity: 0;
     animation: fire 3s ease-in-out infinite;
     transform-origin: bottom;
 }
 
-@keyframes fire {
-    0%, 100% {
-        transform: scale(1, 1);
-        opacity: 1;
-    }
-    50% {
-        transform: scale(1.1, 1.2);
-        opacity: 0.8;
-    }
-}
-
-/* --- 煙のアニメーション --- */
 .smoke {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    bottom: -10%;
+    left: -10%;
+    width: 120%;
+    height: 120%;
     background: radial-gradient(ellipse at bottom, #a0a0a0 0%, transparent 80%);
     opacity: 0;
     animation: smoke 4s ease-in-out infinite;
     transform-origin: bottom;
 }
 
-@keyframes smoke {
-    0% {
-        transform: scale(1, 0.5) translateY(0);
+/* 燃焼時のみエフェクトを表示 */
+body.burning .fire {
+    opacity: 0.8;
+}
+
+body.burning .smoke {
+    opacity: 0.8;
+}
+
+@keyframes fire {
+    0%, 100% {
+        transform: scale(1, 1);
         opacity: 0.8;
     }
+    50% {
+        transform: scale(1.1, 1.2);
+        opacity: 0.6;
+    }
+}
+
+@keyframes smoke {
+    0% {
+        transform: scale(1.2, 0.5) translateY(0);
+        opacity: 0.6;
+    }
     100% {
-        transform: scale(1.2, 2) translateY(-200px);
+        transform: scale(1.5, 2) translateY(-200px);
         opacity: 0;
     }
 }
