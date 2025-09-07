@@ -1,0 +1,120 @@
+/* --- 全体レイアウト --- */
+body {
+    background: #0d1117;
+    color: #e0e6f2;
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    overflow: hidden;
+    text-align: center;
+}
+
+.container {
+    position: relative;
+    z-index: 10;
+    padding: 20px;
+}
+
+h2 {
+    font-size: 2.5em;
+    margin-bottom: 10px;
+}
+
+p {
+    margin-bottom: 20px;
+}
+
+.hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1s, visibility 1s;
+}
+
+#home-button {
+    padding: 12px 25px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    margin-top: 20px;
+    transition: background-color 0.3s;
+}
+#home-button:hover {
+    background-color: #2980b9;
+}
+
+/* --- てるてる坊主 --- */
+.teruteru-barn img {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    transition: transform 1s, opacity 2s ease-in;
+    transform: translateY(0);
+}
+
+/* 燃焼アニメーション（JavaScriptでクラスを付与） */
+.teruteru-barn img.burn {
+    opacity: 0;
+    transform: scale(0.5) translateY(100px);
+}
+
+/* --- 炎のアニメーション --- */
+.fire-container {
+    position: relative;
+    width: 200px;
+    height: 100px;
+    overflow: hidden;
+    margin-top: 50px;
+}
+
+.fire {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at bottom, #fd5e53 0%, transparent 80%);
+    animation: fire 3s ease-in-out infinite;
+    transform-origin: bottom;
+}
+
+@keyframes fire {
+    0%, 100% {
+        transform: scale(1, 1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.1, 1.2);
+        opacity: 0.8;
+    }
+}
+
+/* --- 煙のアニメーション --- */
+.smoke {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at bottom, #a0a0a0 0%, transparent 80%);
+    opacity: 0;
+    animation: smoke 4s ease-in-out infinite;
+    transform-origin: bottom;
+}
+
+@keyframes smoke {
+    0% {
+        transform: scale(1, 0.5) translateY(0);
+        opacity: 0.8;
+    }
+    100% {
+        transform: scale(1.2, 2) translateY(-200px);
+        opacity: 0;
+    }
+}

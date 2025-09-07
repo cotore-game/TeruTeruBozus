@@ -55,7 +55,7 @@
     
     <hr>
     
-    <a href="teruteru_gallery.php" class="gallery-button">みんなのてるてる坊主ギャラリーへ</a>
+    <a href="teruteru_barn.php" class="gallery-button">みんなのてるてる坊主ギャラリーへ</a>
 
     <script src="js/main.js"></script>
 </body>
